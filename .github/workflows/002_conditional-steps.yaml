@@ -1,0 +1,35 @@
+name: 02- Conditional- Steps
+
+on:
+ workflow_dispatch: # This even triggers the workflow manually
+
+jobs:
+ example_job:
+  runs-on: ubuntu- latest
+
+  steps:
+  - name: Step 1 - Exit Code 0
+    id: successful_step
+    run: |
+     echo "exit code 0"
+     exit 0 # Success (exit code 0)
+    shell: bash # If you want you can change shell per step
+
+  - name: step 2 - Execute if Previous Succeeded
+    if: ${{ success()}}
+    run: |
+     echoo "Running because the preveios step succeeded"
+
+  - name: Step 3 - I am failing
+    run: |  
+     echo "I am failing"
+     exit 1 # Failure (non-zero exit code)
+			
+  - name: Step -  I will never be executed
+    run: |
+     echo "I will never be executed"
+				
+  - name: Step 5 - Execute on workflow Failure
+    if: ${{falure()}}
+    run: |
+     echo "workflow failed"
